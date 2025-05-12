@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">EquaBase</string>
+    <string name="welcome">Вітаємо в EquaBase</string>
+    <string name="next_steps">Для того що би отримати доступ до формул, будь ласка оберіть спочатку тему</string>
+    <string name="login_steps">Для того що б скористатися нашим додатком вам треба спочатку увійти в акаунт.</string>
+    <string name="login_button">Увійти</string>
+
+    <string name="mechanics">Механіка</string>
+    <string name="thermodynamics">Молекулярна фізика і основи термодинаміки</string>
+    <string name="electrodynamics">Електродинаміка</string>
+    <string name="fluctuations">Коливання і хвилі</string>
+    <string name="optics">Оптика</string>
+    <string name="atom">Теорія відносності і атом</string>
+
+    <string name="sub_theme">Оберіть будь ласка вашу під тему</string>
+
+    <string name="dynamics">Динаміка</string>
+    <string name="kinematics">Кінематика</string>
+    <string name="statics">Статика</string>
+    <string name="energy">Закони збереження механічної енергії</string>
+    <string name="pressure">Тиск рідини і газу</string>
+
+    <string name="molecular">Молекулярна кінетика</string>
+    <string name="objectstate">Пара, рідини, твердий стан</string>
+    <string name="thermodynamic">Термодинаміка</string>
+    <string name="phenomena">Теплові явища</string>
+
+    <string name="voltage">Постійний струм</string>
+    <string name="electrostatics">Електростатика</string>
+    <string name="field">Магнітне поле</string>
+    <string name="induction">Електромагнітна індукція</string>
+    <string name="metals">Електричний струм в металах</string>
+
+    <string name="ACElectricity">Змінний струм</string>
+    <string name="EVibrations">Електромагнітні коливання</string>
+    <string name="EWaves">Електромагнітні хвилі</string>
+    <string name="MVibrations">Механічні коливання</string>
+    <string name="MWaves">Механічні хвилі</string>
+
+    <string name="photometry">Фотометрія</string>
+    <string name="quantumO">Квантова оптика</string>
+    <string name="physicalO">Фізи́чна (хвильова) оптика</string>
+    <string name="geometricO">Геометрична(променева) оптика</string>
+
+    <string name="relativity">Теорія відносності</string>
+    <string name="atomic">Атом і ядро атома</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

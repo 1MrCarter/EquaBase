@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "586704397117",
+    "project_id": "equabase",
+    "storage_bucket": "equabase.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586704397117:android:e0fa875362959ffe575b54",
+        "android_client_info": {
+          "package_name": "com.example.equabase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586704397117-e1bb25gga06o9dtet8fl8f9m6ik3bk6e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.equabase",
+            "certificate_hash": "38cf26457de86e23fd3be543796f5523441572fa"
+          }
+        },
+        {
+          "client_id": "586704397117-ic8klmlrrn9bm2hbnhp3f5u8m2s6rmtk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkU9Gtu4IyCWjv3zxhkA2c69AmCM6K7Rs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586704397117-ic8klmlrrn9bm2hbnhp3f5u8m2s6rmtk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

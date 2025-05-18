@@ -6,11 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.equabase.databinding.FragmentSubThemeBinding
 
 class SubTheme : Fragment() {
     private lateinit var binding: FragmentSubThemeBinding
-    private lateinit var selectedCategoryType: CategoryType
+    //private lateinit var selectedCategoryType: CategoryType
+    private val viewModel: SubTopicViewModel by viewModels()
+    private lateinit var adapter: SubThemeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,59 +27,29 @@ class SubTheme : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        selectedCategoryType = arguments?.let { SubThemeArgs.fromBundle(it).category } ?: CategoryType.MECHANICS // за замовчуванням
-        renderSelectedCategory(selectedCategoryType)
-    }
-    private fun renderSelectedCategory(categoryType: CategoryType){
-        when (categoryType){
-            CategoryType.MECHANICS -> {
-                binding.mechanicsLayout.visibility = View.VISIBLE
-                binding.thermodynamicsLayout.visibility = View.GONE
-                binding.electrodynamicsLayout.visibility = View.GONE
-                binding.fluctuationsLayout.visibility = View.GONE
-                binding.opticsLayout.visibility = View.GONE
-                binding.atomLayout.visibility = View.GONE
-            }
-            CategoryType.THERMODYNAMICS -> {
-                binding.mechanicsLayout.visibility = View.GONE
-                binding.thermodynamicsLayout.visibility = View.VISIBLE
-                binding.electrodynamicsLayout.visibility = View.GONE
-                binding.fluctuationsLayout.visibility = View.GONE
-                binding.opticsLayout.visibility = View.GONE
-                binding.atomLayout.visibility = View.GONE
-            }
-            CategoryType.ELECTRODYNAMICS -> {
-                binding.mechanicsLayout.visibility = View.GONE
-                binding.thermodynamicsLayout.visibility = View.GONE
-                binding.electrodynamicsLayout.visibility = View.VISIBLE
-                binding.fluctuationsLayout.visibility = View.GONE
-                binding.opticsLayout.visibility = View.GONE
-                binding.atomLayout.visibility = View.GONE
-            }
-            CategoryType.FLUCUATIONSS -> {
-                binding.mechanicsLayout.visibility = View.GONE
-                binding.thermodynamicsLayout.visibility = View.GONE
-                binding.electrodynamicsLayout.visibility = View.GONE
-                binding.fluctuationsLayout.visibility = View.VISIBLE
-                binding.opticsLayout.visibility = View.GONE
-                binding.atomLayout.visibility = View.GONE
-            }
-            CategoryType.OPTICS -> {
-                binding.mechanicsLayout.visibility = View.GONE
-                binding.thermodynamicsLayout.visibility = View.GONE
-                binding.electrodynamicsLayout.visibility = View.GONE
-                binding.fluctuationsLayout.visibility = View.GONE
-                binding.opticsLayout.visibility = View.VISIBLE
-                binding.atomLayout.visibility = View.GONE
-            }
-            CategoryType.ATOM -> {
-                binding.mechanicsLayout.visibility = View.GONE
-                binding.thermodynamicsLayout.visibility = View.GONE
-                binding.electrodynamicsLayout.visibility = View.GONE
-                binding.fluctuationsLayout.visibility = View.GONE
-                binding.opticsLayout.visibility = View.GONE
-                binding.atomLayout.visibility = View.VISIBLE
-            }
+        // Отримуємо передану категорію
+        val categoryArg = arguments?.let { SubThemeArgs.fromBundle(it).category }
+            ?: CategoryType.MECHANICS
+
+        // Встановлюємо її у ViewModel
+        viewModel.setCategory(categoryArg)
+
+        // Налаштовуємо адаптер для списку підтем
+        adapter = SubThemeAdapter { subTopic ->
+            // Перехід до AnswerPage з передачею обраної підкатегорії
+            val action = SubThemeDirections.actionSubThemeToAnswerPage(subTopic)
+            findNavController().navigate(action)
+        }
+
+        // Прив'язуємо адаптер до RecyclerView
+        binding.subThemeRecycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.subThemeRecycler.adapter = adapter
+
+        // Спостерігаємо за підтемами і оновлюємо список
+        viewModel.subTopics.observe(viewLifecycleOwner) { subCategoryList ->
+            adapter.submitList(subCategoryList)
         }
     }
+
+
 }

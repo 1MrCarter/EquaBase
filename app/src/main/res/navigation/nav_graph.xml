@@ -37,5 +37,17 @@
         <argument
             android:name="category"
             app:argType="com.example.equabase.CategoryType" />
+        <action
+            android:id="@+id/action_subTheme_to_answerPage"
+            app:destination="@id/answerPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/answerPage"
+        android:name="com.example.equabase.AnswerPage"
+        android:label="fragment_answer_page"
+        tools:layout="@layout/fragment_answer_page">
+    <argument
+        android:name="subcategory"
+        app:argType="com.example.equabase.SubCategoryType" />
     </fragment>
 </navigation>

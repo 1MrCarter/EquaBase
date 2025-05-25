@@ -13,9 +13,11 @@ import com.example.equabase.databinding.FragmentSubThemeBinding
 
 class SubTheme : Fragment() {
     private lateinit var binding: FragmentSubThemeBinding
+    private val viewModel: CategoryItemViewModel by viewModels()
+    private lateinit var adapter: CategoryItemAdapter
     //private lateinit var selectedCategoryType: CategoryType
-    private val viewModel: SubTopicViewModel by viewModels()
-    private lateinit var adapter: SubThemeAdapter
+    //private val viewModel: SubTopicViewModel by viewModels()
+    //private lateinit var adapter: SubThemeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,28 +29,26 @@ class SubTheme : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Отримуємо передану категорію
-        val categoryArg = arguments?.let { SubThemeArgs.fromBundle(it).category }
-            ?: CategoryType.MECHANICS
 
-        // Встановлюємо її у ViewModel
-        viewModel.setCategory(categoryArg)
+        val selectedCategory = SubThemeArgs.fromBundle(requireArguments()).category
+        viewModel.loadSubCategories(selectedCategory)
 
         // Налаштовуємо адаптер для списку підтем
-        adapter = SubThemeAdapter { subTopic ->
-            // Перехід до AnswerPage з передачею обраної підкатегорії
-            val action = SubThemeDirections.actionSubThemeToAnswerPage(subTopic)
-            findNavController().navigate(action)
+        adapter = CategoryItemAdapter { item ->
+            if (item is CategoryItem.SubCategory) {
+                val action = SubThemeDirections.actionSubThemeToAnswerPage(item.type)
+                findNavController().navigate(action)
+            }
         }
 
-        // Прив'язуємо адаптер до RecyclerView
-        binding.subThemeRecycler.layoutManager = LinearLayoutManager(requireContext())
-        binding.subThemeRecycler.adapter = adapter
-
-        // Спостерігаємо за підтемами і оновлюємо список
-        viewModel.subTopics.observe(viewLifecycleOwner) { subCategoryList ->
-            adapter.submitList(subCategoryList)
+        binding.subThemeRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@SubTheme.adapter
         }
+        viewModel.items.observe(viewLifecycleOwner) { list ->
+            adapter.submitList(list)
+        }
+
     }
 
 

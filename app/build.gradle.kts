@@ -44,7 +44,6 @@ android {
         enable = true
     }
 
-
 }
 
 dependencies {

@@ -14,37 +14,39 @@ import com.example.equabase.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
-    private val loginVM: LoginVM by viewModels()
-    private val mainVM : MainViewModel by viewModels()
     private lateinit var binding: FragmentMainBinding
-    private lateinit var adapter: ButtonAdapter
+    private val viewModel: CategoryItemViewModel by viewModels()
+    private lateinit var adapter: CategoryItemAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //Log.d("MainTest", "authState = До теста")
-        loginVM.authenticatedState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            when (authenticationState){
-                LoginVM.AuthenticationState.UNAUTHENTICATED -> {
-                    //Log.d("MainTest", "Переходимо на іншу сторінку")
-                    findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
-                } else -> {
-                //Log.d("MainTest", "Ігноруємо бо зайшли")
-                }
-            } })
 
-        adapter = ButtonAdapter {category -> val action = MainFragmentDirections.actionMainFragmentToSubTheme(category)
-            findNavController().navigate(action)
+        adapter = CategoryItemAdapter { item ->
+            when (item) {
+                is CategoryItem.Category -> {
+                    val action = MainFragmentDirections.actionMainFragmentToSubTheme(item.type)
+                    findNavController().navigate(action)
+                }
+                else -> {}
+            }
         }
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
-        mainVM.categories.observe(viewLifecycleOwner) { list -> adapter.submitList(list)}
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@MainFragment.adapter
+        }
+
+        viewModel.items.observe(viewLifecycleOwner) { itemList ->
+            adapter.submitList(itemList)
+        }
+
+        viewModel.loadCategories()
         }
     }

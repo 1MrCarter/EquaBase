@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">EquaBase</string>
     <string name="welcome">Вітаємо в EquaBase</string>
     <string name="next_steps">Для того що би отримати доступ до формул, будь ласка оберіть спочатку тему</string>
@@ -44,6 +44,9 @@
 
     <string name="relativity">Теорія відносності</string>
     <string name="atomic">Атом і ядро атома</string>
+
+    <string name="please_enter">Введіть назву формули</string>
+    <string name="here_description">Опис формули зявиться тут</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

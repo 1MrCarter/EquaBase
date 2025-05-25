@@ -5,55 +5,52 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.equabase.data.PhysicsFormula
+import com.example.equabase.data.PhysicsFormulaData
+import com.example.equabase.databinding.FragmentAnswerPageBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AnswerPage.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AnswerPage : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+        private lateinit var binding: FragmentAnswerPageBinding
+        private lateinit var formulas: List<PhysicsFormula>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            binding = FragmentAnswerPageBinding.inflate(inflater, container, false)
+            return binding.root
         }
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_answer_page, container, false)
-    }
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AnswerPage.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AnswerPage().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+            val subcategory = AnswerPageArgs.fromBundle(requireArguments()).subcategory
+            formulas = PhysicsFormulaData.formulas.filter { it.subcategory == subcategory }
+
+            binding.formulaWebView.settings.javaScriptEnabled = true
+
+            binding.searchInput.setOnEditorActionListener { _, _, _ ->
+                val query = binding.searchInput.text.toString().trim()
+                showFormula(query)
+                true
             }
-    }
+        }
+
+        private fun showFormula(query: String) {
+            val result = formulas.find {
+                it.name.contains(query, ignoreCase = true)
+            }
+
+            if (result != null) {
+                val template = requireContext().assets.open("formula_template_katex.html")
+                    .bufferedReader().use { it.readText() }
+                val html = template.replace("FORMULA_PLACEHOLDER", result.formula)
+
+                binding.formulaWebView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null)
+                binding.formulaDescription.text = result.description
+            } else {
+                binding.formulaWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
+                binding.formulaDescription.text = "Формулу не знайдено"
+            }
+        }
 }

@@ -58,6 +58,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.firebaseui:firebase-ui-auth:9.0.0")
+    implementation("com.github.frhnfrq:MathView:1.2")
     implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")

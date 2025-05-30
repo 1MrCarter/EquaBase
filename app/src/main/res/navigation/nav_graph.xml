@@ -46,8 +46,9 @@
         android:name="com.example.equabase.AnswerPage"
         android:label="fragment_answer_page"
         tools:layout="@layout/fragment_answer_page">
-    <argument
-        android:name="subcategory"
-        app:argType="com.example.equabase.SubCategoryType" />
+        <argument
+            android:name="subcategory"
+            app:argType="com.example.equabase.SubCategoryType"
+            app:nullable="false" />
     </fragment>
 </navigation>

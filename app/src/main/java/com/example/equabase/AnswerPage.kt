@@ -5,52 +5,50 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.equabase.data.PhysicsFormula
 import com.example.equabase.data.PhysicsFormulaData
 import com.example.equabase.databinding.FragmentAnswerPageBinding
 
 class AnswerPage : Fragment() {
-        private lateinit var binding: FragmentAnswerPageBinding
-        private lateinit var formulas: List<PhysicsFormula>
+    private lateinit var binding: FragmentAnswerPageBinding
+    private val args: AnswerPageArgs by navArgs<AnswerPageArgs>()
+    private lateinit var adapter: FormulaAdapter
+    private var fullFormulaList = listOf<PhysicsFormula>()
 
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View {
-            binding = FragmentAnswerPageBinding.inflate(inflater, container, false)
-            return binding.root
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentAnswerPageBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val subcategory = args.subcategory
+        fullFormulaList = PhysicsFormulaData.formulas.filter { it.subcategory == subcategory }
 
-            val subcategory = AnswerPageArgs.fromBundle(requireArguments()).subcategory
-            formulas = PhysicsFormulaData.formulas.filter { it.subcategory == subcategory }
+        adapter = FormulaAdapter()
+        adapter.submitList(fullFormulaList)
 
-            binding.formulaWebView.settings.javaScriptEnabled = true
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
 
-            binding.searchInput.setOnEditorActionListener { _, _, _ ->
-                val query = binding.searchInput.text.toString().trim()
-                showFormula(query)
-                true
+        setupSearch()
+    }
+
+    private fun setupSearch() {
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val filteredList = fullFormulaList.filter {
+                    it.name.contains(newText ?: "", ignoreCase = true)
+                }
+                adapter.submitList(filteredList)
+                return true
             }
-        }
-
-        private fun showFormula(query: String) {
-            val result = formulas.find {
-                it.name.contains(query, ignoreCase = true)
-            }
-
-            if (result != null) {
-                val template = requireContext().assets.open("formula_template_katex.html")
-                    .bufferedReader().use { it.readText() }
-                val html = template.replace("FORMULA_PLACEHOLDER", result.formula)
-
-                binding.formulaWebView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null)
-                binding.formulaDescription.text = result.description
-            } else {
-                binding.formulaWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
-                binding.formulaDescription.text = "Формулу не знайдено"
-            }
-        }
+        })
+    }
 }

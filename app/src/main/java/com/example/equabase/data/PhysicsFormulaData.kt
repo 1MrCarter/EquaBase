@@ -16,6 +16,9 @@ object PhysicsFormulaData {
         *MolecularKineticsFormulas.list.toTypedArray(),
         *ThermalPhenomenaFormulas.list.toTypedArray(),
         *ThermodynamicsFormulas.list.toTypedArray(),
+        *ElectrostaticsFormulas.list.toTypedArray(),
+        *DirectCurrentFormulas.list.toTypedArray(),
+        *MagneticFieldFormulas.list.toTypedArray(),
         //*DynamicsFormulas.list.toTypedArray(),
         //*OpticsFormulas.list.toTypedArray()
     )

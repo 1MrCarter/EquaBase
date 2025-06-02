@@ -19,6 +19,7 @@ object PhysicsFormulaData {
         *ElectrostaticsFormulas.list.toTypedArray(),
         *DirectCurrentFormulas.list.toTypedArray(),
         *MagneticFieldFormulas.list.toTypedArray(),
+        *SteamLiquidSolidFormulas.list.toTypedArray(),
         //*DynamicsFormulas.list.toTypedArray(),
         //*OpticsFormulas.list.toTypedArray()
     )
